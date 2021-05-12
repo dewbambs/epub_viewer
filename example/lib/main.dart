@@ -55,12 +55,12 @@ class _MyAppState extends State<MyApp> {
                     print(iosBookPath);
                     String androidBookPath = 'file:///android_asset/3.epub';
                     EpubViewer.setConfig(
-                      themeColor: Theme.of(context).primaryColor,
-                      identifier: "iosBook",
-                      scrollDirection: EpubScrollDirection.ALLDIRECTIONS,
-                      allowSharing: true,
-                      enableTts: true,
-                    );
+                        themeColor: Theme.of(context).primaryColor,
+                        identifier: "iosBook",
+                        scrollDirection: EpubScrollDirection.ALLDIRECTIONS,
+                        allowSharing: true,
+                        enableTts: true,
+                        nightMode: true);
 //                    EpubViewer.open(
 //                      Platform.isAndroid ? androidBookPath : iosBookPath,
 //                      lastLocation: EpubLocator.fromJson({
@@ -86,7 +86,8 @@ class _MyAppState extends State<MyApp> {
                     );
                     // get current locator
                     EpubViewer.locatorStream.listen((locator) {
-                      print('LOCATOR: ${EpubLocator.fromJson(jsonDecode(locator))}');
+                      print(
+                          'LOCATOR: ${EpubLocator.fromJson(jsonDecode(locator))}');
                     });
                   },
                   child: Container(
@@ -100,11 +101,9 @@ class _MyAppState extends State<MyApp> {
 
   Future downloadFile() async {
     print('download1');
-    PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.storage);
 
-    if (permission != PermissionStatus.granted) {
-      await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+    if (await Permission.storage.isGranted) {
+      await Permission.storage.request();
       await startDownload();
     } else {
       await startDownload();
@@ -112,11 +111,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   startDownload() async {
-    Directory appDocDir = Platform.isAndroid
+    Directory? appDocDir = Platform.isAndroid
         ? await getExternalStorageDirectory()
         : await getApplicationDocumentsDirectory();
 
-    String path = appDocDir.path + '/chair.epub';
+    String path = appDocDir!.path + '/chair.epub';
     File file = File(path);
 //    await file.delete();
 
