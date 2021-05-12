@@ -1,6 +1,6 @@
 import Flutter
 import UIKit
-import EpubViewerKit
+import epub_kitty_ios
 
 public class SwiftEpubViewerPlugin: NSObject, FlutterPlugin,FolioReaderPageDelegate,FlutterStreamHandler {
     
@@ -33,10 +33,9 @@ public class SwiftEpubViewerPlugin: NSObject, FlutterPlugin,FolioReaderPageDeleg
         let color = arguments["themeColor"] as! String
         let allowSharing = arguments["allowSharing"] as! Bool
         let enableTts = arguments["enableTts"] as! Bool
-        let nightMode = arguments["nightMode"] as! Bool
 
         self.config = EpubConfig.init(Identifier: Identifier,tintColor: color,allowSharing:
-            allowSharing,scrollDirection: scrollDirection, enableTts: enableTts, nightMode: nightMode)
+            allowSharing,scrollDirection: scrollDirection, enableTts: enableTts)
 
         break
       case "open":
@@ -76,7 +75,8 @@ public class SwiftEpubViewerPlugin: NSObject, FlutterPlugin,FolioReaderPageDeleg
           }
 
           let readerVc = UIApplication.shared.keyWindow!.rootViewController ?? UIViewController()
-          folioReader.presentReader(parentViewController: readerVc, withEpubPath: epubPath, andConfig: self.config!.config, shouldRemoveEpub: false)
+
+        folioReader.presentReader(parentViewController: readerVc, withEpubPath: epubPath, andConfig: self.config!.config, shouldRemoveEpub: false)
           folioReader.readerCenter?.pageDelegate = self
       }
 

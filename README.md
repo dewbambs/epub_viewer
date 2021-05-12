@@ -48,12 +48,6 @@ dependencies:
   epub_viewer: latest_version
 ```
 
-Note: Please add this to the release build type in your app build.gradle to avoid crashes on android release builds
-```
-minifyEnabled false
-shrinkResources false
-```
-
 ## Usage
 ```dart
 EpubViewer.setConfig(

@@ -25,7 +25,6 @@ class EpubViewer {
   static void setConfig(
       {Color themeColor = Colors.blue,
       String identifier = 'book',
-      bool nightMode = false,
       EpubScrollDirection scrollDirection = EpubScrollDirection.ALLDIRECTIONS,
       bool allowSharing = false,
       bool enableTts = false}) async {
@@ -35,14 +34,13 @@ class EpubViewer {
       "scrollDirection": Util.getDirection(scrollDirection),
       "allowSharing": allowSharing,
       'enableTts': enableTts,
-      'nightMode': nightMode
     };
     await _channel.invokeMethod('setConfig', agrs);
   }
 
   /// bookPath should be a local file.
   /// Last location is only available for android.
-  static void open(String bookPath, {EpubLocator? lastLocation}) async {
+  static void open(String bookPath, {EpubLocator lastLocation}) async {
     Map<String, dynamic> agrs = {
       "bookPath": bookPath,
       'lastLocation':
@@ -53,7 +51,7 @@ class EpubViewer {
 
   /// bookPath should be an asset file path.
   /// Last location is only available for android.
-  static Future openAsset(String bookPath, {EpubLocator? lastLocation}) async {
+  static Future openAsset(String bookPath, {EpubLocator lastLocation}) async {
     if (extension(bookPath) == '.epub') {
       Map<String, dynamic> agrs = {
         "bookPath": (await Util.getFileFromAsset(bookPath)).path,
